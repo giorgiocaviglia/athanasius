@@ -1,9 +1,9 @@
 /* test */
 
 body {
-  font: 14px Helvetica Neue;
-  text-rendering: optimizeLegibility;
-  margin-top: 1em;
+  font: 14px Helvetica;
+  	margin-top: 1em;
+	background-color:#f4f4f4;
   overflow-y: scroll;
 }
 
@@ -70,7 +70,7 @@ a:hover {
 }
 
 h1 {
-  font-size: 36px;
+  font-size: 24px;
   font-weight: 300;
   margin-bottom: .3em;
 }
@@ -128,4 +128,46 @@ button:hover {
 
 .highlight pre {
   overflow-x: auto;
+}
+
+
+/* For the calendar */
+
+#chart {
+  font: 11px sans-serif;
+  font-weight:bold;
+}
+
+.day {
+  fill: #fff;
+  stroke: #ccc;
+  shape-rendering: crispEdges;
+}
+
+.day:hover {
+	fill:#555;
+}
+
+.month {
+  fill: none;
+  stroke: #000;
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
+}
+
+
+/* Dialog Box */
+
+#message .letters {
+	font-size:36px;
+	font-weight:bold;
+}
+
+#message .description {
+	font-size:10px;
+	color: #888;
+}
+
+#message .link {
+	padding-top:5px;
 }

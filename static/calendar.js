@@ -1,6 +1,6 @@
 var calendar = {
 
-  format: d3.time.format("%Y-%m-%d"),
+  format: d3.time.format("%m.%d.%Y"),
 
   dates: function(year) {
     var dates = [],

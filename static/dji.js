@@ -1,5 +1,5 @@
-var w = 960,
-pw = 14,
+var w = 860,
+pw = 35,
 z = ~~((w - pw * 2) / 53),
 ph = z >> 1,
 h = z * 7;
@@ -20,6 +20,7 @@ try {
     if (console&&console.log)
         console.log(e+" for "+queryString);
 }
+
 var vis = d3.select("#chart")
     .selectAll("svg")
     .data(d3.range(parseInt(mindate.substr(0,4)), 1+parseInt(maxdate.substr(0,4))))
@@ -31,7 +32,7 @@ var vis = d3.select("#chart")
     .attr("transform", "translate(" + pw + "," + ph + ")");
 
 vis.append("svg:text")
-    .attr("transform", "translate(-6," + h / 2 + ")rotate(-90)")
+    .attr("transform", "translate(-20," + (h / 2 +5)+")" )
     .attr("text-anchor", "middle")
     .text(function(d) { return d; });
  
@@ -43,7 +44,28 @@ vis.selectAll("rect.day")
     .attr("class", "day")
     .attr("fill", "#fff")
     .attr("width", z)
-    .attr("height", z);
+    .attr("height", z)
+	.on("click", function(data) {
+		
+		// The title of the dialog box: the day
+		var day = data.Date
+		$("#dialog").dialog({ title: day}, {resizable: false})
+		
+		// The amount of letters for this day
+		var numLetters = "34"
+		$("#message .letters").html(numLetters)
+		
+		// A brief description
+		var description = "letters for this day</br>"
+		$("#message .description").html(description)
+		
+		// Link to the letters list
+		var link = "<a href=''>See the letters</a>"
+		$("#message .link").html(link)
+		
+	}, false)
+
+;
 
 vis.selectAll("path.month")
     .data(calendar.months)
@@ -60,6 +82,7 @@ vis.selectAll("path.month")
                   + "H" + (d.firstWeek + 1) * z
                   + "Z";
           });
+
 function requestDateChange(mindate,maxdate){
     
     var xhr=new XMLHttpRequest();
@@ -82,4 +105,5 @@ function requestDateChange(mindate,maxdate){
     xhr.open("GET","query?q="+encodeURIComponent(JSON.stringify(requestObject)));
     return xhr.send();
 }
+
 requestDateChange(mindate,maxdate);
