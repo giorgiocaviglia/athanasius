@@ -1,5 +1,7 @@
 env/*
 athanasius/data/*
+athanasius/mongo/*
 athanasius/athanasius/settings.py
 *.json
 *.pyc
+.DS_Store

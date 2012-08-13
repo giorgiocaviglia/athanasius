@@ -1,23 +1,49 @@
 # Create your views here.
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
-from query import *
-from prepare import *
+import bson
+import json
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, render_to_response
+from django.template import RequestContext, loader
+from django.core.urlresolvers import reverse
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required, user_passes_test
 
-def get_letters( request ):	
-	return HttpResponse( query_get_letters(request), mimetype="application/json" )
+from api import *
+from helpers import *
+from mongowrapper import MongoWrapper
 
-@login_required
-def get_archives( request ):
-	return HttpResponse( query_get_archives(request), mimetype="application/json" )
+#@login_required
+def test(request):
+    response = testDB(request)
+    return HttpResponse(json.dumps(response, default=bson.json_util.default), mimetype="application/json")
 
-def prepare_people( request ):
-	format_people()
-	return HttpResponse("")
+def meta(request):
+    response = getMeta(request)
+    return HttpResponse(json.dumps(response, default=bson.json_util.default), mimetype="application/json")
 
-def prepare_places( request ):
-	if format_places() == False:
-		msg = "Problema"
-	else:
-		msg = "Buono"
-	return HttpResponse(msg)
+    
+def search(request):
+    response = getSearch(request)
+    return HttpResponse(json.dumps(response, default=bson.json_util.default), mimetype="application/json")
+
+def suggest(request):
+    response = getSuggest(request)
+    return HttpResponse(json.dumps(response, default=bson.json_util.default), mimetype="application/json")
+
+
+def persons(request, person_id=None, relation=None):
+    
+    if person_id:
+        if relation:            
+            if relation == 'correspondents':
+                response = getPersonCorrespondents(request, person_id)
+            elif relation == 'letters':
+                response = getPersonLetters(request, person_id)
+            else:
+                response = createResponseObjectWithError("Not a valid relation, sorry")
+        else:
+            response = getPerson(request, person_id)        
+    else:
+        response = getPersons(request)
+
+    return HttpResponse(json.dumps(response, default=bson.json_util.default), mimetype="application/json")

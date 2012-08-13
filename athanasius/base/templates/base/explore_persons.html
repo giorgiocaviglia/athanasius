@@ -1,0 +1,31 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Athanasius | Persons
+{% endblock %}
+
+{% block head_script %}
+<script src="/static/base/js/bootstrap-typeahead.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+</div>
+
+<div id="page-info">
+	
+	<div class="row">
+		<div id="info-list" class="span8"></div>
+		<div id="side-list" class="span4"></div>
+	</div>
+	
+</div>
+
+<script>
+	var person_id = "{{ person_id }}";
+</script>
+
+
+<script src="/static/base/js/explore_persons.js"></script>
+
+{% endblock %}

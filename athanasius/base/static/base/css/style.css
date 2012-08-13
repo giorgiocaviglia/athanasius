@@ -1,0 +1,41 @@
+body {
+	padding-top:60px;
+	padding-bottom:40px;
+}
+
+
+.loading {
+	background: url("/static/base/img/loading.gif") no-repeat center;
+	width:32px;
+	height:32px;
+	display:none;
+}
+
+/* datatable */
+
+.datatable-table th {
+	cursor:pointer;
+}
+
+.datatable-table th:hover {
+	text-decoration:underline;
+}
+
+.datatable-highlight {
+	font-weight:bold;
+}
+
+.datatable-sorted {
+	text-decoration:underline;
+}
+
+/* search */
+.search-field {
+	color: #aaa;
+	line-height:1;
+}
+
+.typeahead-info {
+	border-top: 1px solid #ddd;
+	padding-top:5px;
+}
