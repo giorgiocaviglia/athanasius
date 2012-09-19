@@ -104,6 +104,10 @@ def suggest(request):
     response = getSuggest(request)
     return HttpResponse(json.dumps(response, default=bson.json_util.default), mimetype="application/json")
 
+def dump(request):
+    response = getDump(request)
+    return HttpResponse(json.dumps(response, default=bson.json_util.default), mimetype="application/json")
+
 
 def persons(request, person_id=None, relation=None):
     

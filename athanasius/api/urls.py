@@ -20,6 +20,7 @@ urlpatterns = patterns('api.views',
 	url(r'^persons/(?P<person_id>\w+)/(?P<relation>\w+)/$', 'persons', name="api_person"),
     
 	url(r'^extract/$', 'extract', name="api_extract"),	
+	url(r'^dump/$', 'dump', name="api_dump"),	
     
     
 )

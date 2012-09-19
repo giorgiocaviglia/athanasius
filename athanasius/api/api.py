@@ -374,6 +374,17 @@ def getPersonCorrespondents(request, person_id):
     return response
 
 
+def getDump(request):
+    
+    query_dict = getQueryDict(request)
+    offset = getOffset(request)
+    limit = getLimit(request)
+    
+    response = getObjects('m_person', query_dict, offset, limit)
+    return response
+    
+
+
 
 def getPersonLetters(request, person_id):
     
