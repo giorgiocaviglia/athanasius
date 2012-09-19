@@ -4,6 +4,7 @@ import settings
 from bson.code import Code
 from scripts import initScripts
 import csv
+import os
 
 def testDB(request):
     """
@@ -468,7 +469,9 @@ def getPersonGeoLetters(request, person_id):
         
         letters = query_result['records']
         
-        f = open("ee.places.tsv","r")
+        __dir__ = os.path.dirname(os.path.abspath(__file__))
+        filepath = os.path.join(__dir__, 'ee.places.tsv')
+        f = open(filepath,"r")
         reader = csv.DictReader(f,delimiter="\t")
         places = {}
         
