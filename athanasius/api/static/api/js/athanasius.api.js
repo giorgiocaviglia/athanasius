@@ -86,6 +86,32 @@
 			});
 		}
 		
+		/* Persons/Letters */
+		
+		api.getPersonLetters = function(id, callback, args) {    
+			var url = baseUrl + "/api/persons/" + id + "/letters";
+			$.ajax({
+				type: 'GET',
+		        url: url,
+				data : args,
+				success: callback,
+				dataType: 'json'
+			});
+		}
+		
+		/* Persons/Letters */
+		
+		api.getPersonGeoLetters = function(id, callback, args) {    
+			var url = baseUrl + "/api/persons/" + id + "/geoletters";
+			$.ajax({
+				type: 'GET',
+		        url: url,
+				data : args,
+				success: callback,
+				dataType: 'json'
+			});
+		}
+		
 		
 		
 		/* An helper for having the id formetted */
@@ -150,13 +176,5 @@
 		return api;
 	
 	};
-
-
-
-
-
-
-
-
-
+	
 })();

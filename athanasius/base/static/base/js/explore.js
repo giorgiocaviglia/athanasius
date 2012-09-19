@@ -1,5 +1,5 @@
 var api = athanasius.api();
-
+console.log(api)
 athanasius.utils.loading(".loading")
 
 $('#startSearch').click(function(){

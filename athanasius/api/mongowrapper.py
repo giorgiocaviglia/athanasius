@@ -59,9 +59,8 @@ class MongoWrapper(object):
         return result
   
       
-    def find_one(self, db_name, collection_name, request): 
+    def find_one(self, db_name, collection_name, queryDict): 
     
-        queryDict = request.GET.get('query') or request.POST.get('query')
         queryDict = self.parseJsonDict(queryDict)
         collection = self.getCollection(db_name, collection_name)
         return collection.find_one(queryDict)
@@ -103,7 +102,7 @@ class MongoWrapper(object):
         return result        
     
     
-    def objects(self, db_name, collection_name, query_dict={}, offset=0, limit=100, formatter=None):
+    def objects(self, db_name, collection_name, query_dict={}, offset=0, limit=100000, formatter=None):
         collection = self.getCollection(db_name, collection_name)
         cursor = collection.find(query_dict)
         count = cursor.count()

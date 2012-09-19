@@ -90,6 +90,13 @@ def getCaseSensitive(request, var_name='case_sensitive'):
         return settings.DEFAULT_CASE_SENSITIVE
 
 
+def getAuth(request):
+    username = request.GET.get("username") or request.POST.get("username")
+    password = request.GET.get("password") or request.POST.get("password")
+    
+    return { 'username' : username, 'password' : password }
+    
+
 
 def getFormatter(self, var_name='formatter'):
     formatter = request.GET.get(var_name) or request.POST.get(var_name)

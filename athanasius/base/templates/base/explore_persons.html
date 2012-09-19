@@ -6,25 +6,47 @@ Athanasius | Persons
 
 {% block head_script %}
 <script src="/static/base/js/bootstrap-typeahead.js"></script>
+<script src="/static/base/js/polymaps.min.js"></script>
+<script src="/static/base/js/ink.js"></script>
+<script src="/static/base/js/ink.vis.js"></script>
+
+
 {% endblock %}
 
 {% block content %}
 <div class="page-header">
 </div>
 
-<div id="page-info">
 	
 	<div class="row">
-		<div id="info-list" class="span8"></div>
-		<div id="side-list" class="span4"></div>
+		<div id="bio" class="span12">
+			<div class="row">
+				<div id="bio-picture" class="span2"></div>
+				<div id="bio-info-base" class="span5"></div>
+				<div id="bio-info-more" class="span5"></div>
+
+			</div>
+		</div>
+		
 	</div>
 	
-</div>
+	<h4>Timeline</h4>
+	<div class="row">
+		<div id="timeline" class="span12"></div>
+	</div>
+
+	<h4>Places</h4>
+	<div class="row">
+		<div id="map" class="span12"></div>
+	</div>
+
+	
+
+
 
 <script>
 	var person_id = "{{ person_id }}";
 </script>
-
 
 <script src="/static/base/js/explore_persons.js"></script>
 

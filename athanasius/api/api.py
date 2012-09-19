@@ -3,6 +3,7 @@ from helpers import *
 import settings
 from bson.code import Code
 from scripts import initScripts
+import csv
 
 def testDB(request):
     """
@@ -23,8 +24,63 @@ def testDB(request):
         response['errors'] = str(e)
         response['status'] = 0
     
+    try:
+        mongo.connection.close()
+    except:
+        pass
+    
     return response
 
+
+# ==== /archive ====
+def getArchive(request):
+    """
+    Get an archive
+    """    
+
+    response = createBaseResponseObject()
+    response['meta']['user'] = str(request.user)
+    
+    database = settings.MONGO_SERVER_DEFAULT_DB
+    collection = 'letter'
+    
+    offset = getOffset(request)
+    limit = getLimit(request)
+    
+    
+    try:
+    
+        query_dict = { "SourceArchive" : "Electronic Enlightenment" } #{'PrimaryName':{'$regex' : query, '$options': 'i'}}
+    
+        mongo = MongoWrapper()
+        mongo.connect()
+    
+        existing_dbs = mongo.connection.database_names()
+        if database not in existing_dbs:
+            raise Exception("Database %s does not exist" % database)
+            
+        database_object = mongo.getDb(database)
+        existing_collections = database_object.collection_names()
+        if collection not in existing_collections:
+            raise Exception("Collection %s does not exist" % collection)
+       
+        query_result = mongo.objects(database, collection, query_dict)
+
+   #     response['count'] = query_result['count']
+        response['results'] = query_result#['records']
+        response['request'] = request.get_full_path()
+    
+    except Exception, e:
+        response['errors'] = repr(e)
+        response['status'] = 0
+    
+    try:
+        mongo.connection.close()
+    except:
+        pass
+    
+    return response
+    
 
 # ==== /meta ====
 def getMeta(request):
@@ -197,9 +253,6 @@ def getSearch(request):
             
             query_dict['$or'].append(query_field)
         
-        print fields
-        print query_dict
-        
         mongo = MongoWrapper()
             
         mongo.connect()
@@ -303,7 +356,6 @@ def getPersonCorrespondents(request, person_id):
         query_dict = {'_id' : {'$in': correspondents.keys() }}
         query_result = mongo.objects(database, collection, query_dict=query_dict,limit=10000)
         for c in query_result['records']:
-            print c['_id']
             correspondents[c['_id']]['data'] = c
         
         response['count'] = query_result['count']
@@ -368,6 +420,130 @@ def getPersonLetters(request, person_id):
         
     return response
     
+
+
+def getPersonGeoLetters(request, person_id):
+    
+    query_dict = {'$or' : [
+        {'MAuthor': {'$elemMatch' : {'$id': { '$regex' : getObjectId(person_id) } } } },
+        {'MRecipient': {'$elemMatch' : {'$id': { '$regex' : getObjectId(person_id) } } } }
+    ]}
+    
+    offset = getOffset(request)
+    limit = getLimit(request)
+        
+    response = createBaseResponseObject()
+    database = settings.MONGO_SERVER_DEFAULT_DB
+    collection = 'letter'
+    mongo = MongoWrapper()
+    
+    try:
+        
+        mongo.connect()
+    
+        existing_dbs = mongo.connection.database_names()
+        if database not in existing_dbs:
+            raise Exception("Database %s does not exist" % database)
+            
+        database_object = mongo.getDb(database)
+        existing_collections = database_object.collection_names()
+        if collection not in existing_collections:
+            raise Exception("Collection %s does not exist" % collection)
+       
+        query_result = mongo.objects(database, collection, query_dict=query_dict, limit=limit, offset=offset )
+
+        response['count'] = query_result['count']
+        #response['results'] = query_result['records']
+        
+        letters = query_result['records']
+        
+        f = open("ee.places.tsv","r")
+        reader = csv.DictReader(f,delimiter="\t")
+        places = {}
+        
+        for r in reader:
+            places[r['Raw']] = r
+        
+        
+        nodes = {}
+        links = {}
+        nodesArray = []
+        linksArray = []
+        info = { 'no' : 0, 'yes' : 0, 'nod' : 0, 'nos' : 0 }
+        
+        for l in letters:
+            
+            if l['SourceRaw'] != "":
+            
+                if not l['SourceRaw'] in nodes:
+                    node = {}
+                    node['index'] = len(nodes.keys())
+                    node['name'] = l['SourceRaw']
+                    node['label'] = l['SourceRaw']
+                    node['value'] = 1
+                    if l['SourceRaw'] in places:
+                        node['coords'] = places[l['SourceRaw']]['Coords']
+                        nodes[l['SourceRaw']] = node
+                else:
+                    nodes[l['SourceRaw']]['value'] += 1
+            
+            if l['DestinationRaw'] != "":
+                
+                if not l['DestinationRaw'] in nodes:
+                    node = {}
+                    node['index'] = len(nodes.keys())
+                    node['name'] = l['DestinationRaw']
+                    node['label'] = l['DestinationRaw']
+                    node['value'] = 1
+                    if l['DestinationRaw'] in places:
+                        node['coords'] = places[l['DestinationRaw']]['Coords']
+                        nodes[l['DestinationRaw']] = node
+                else:
+                    nodes[l['DestinationRaw']]['value'] += 1
+        
+        for l in letters:
+            
+            if l['SourceRaw'] == "":
+                 info['nos'] +=1
+            if l['DestinationRaw'] == "":
+                 info['nod'] +=1
+            if l['DestinationRaw'] == "" and l['SourceRaw'] == "":
+                 info['no'] +=1
+            
+            if l['DestinationRaw'] != "" and l['SourceRaw'] != "" and l['DestinationRaw'] in nodes and l['SourceRaw'] in nodes:
+                info['yes'] +=1
+                
+                if not l['SourceRaw'] in links:
+                    links[l['SourceRaw']] = {}
+            
+                if not l['DestinationRaw'] in links[l['SourceRaw']]:
+                    links[l['SourceRaw']][l['DestinationRaw']] = 1
+                else:
+                    links[l['SourceRaw']][l['DestinationRaw']] +=1
+        
+        
+        for s in links:
+            for d in links[s]:
+                link = {}
+                link['source'] = nodes[s]['index']
+                link['target'] = nodes[d]['index']
+                link['value'] = links[s][d]
+                linksArray.append(link)
+        
+        nodes = sorted(nodes.values(), key=lambda k: k['index']) 
+
+        response['results'] = {'info':info,'nodes' : nodes, 'links' : linksArray }
+    
+    except Exception, e:
+        response['errors'] = str(e)
+        response['status'] = 0
+    
+    try:
+        mongo.connection.close()
+    except:
+        pass
+        
+    return response
 
 
 # ==== Generic ====
