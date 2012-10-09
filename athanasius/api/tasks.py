@@ -1,4 +1,6 @@
-# tasks
+#   Celery tasks
+#   For mapping etc
+
 from celery import task
 
 @task()
