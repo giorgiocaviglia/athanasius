@@ -3,6 +3,14 @@
 
 from celery import task
 
+
 @task()
-def add(x, y):
-    return x + y
+def findSimilarItems():
+    
+    return {}
+
+
+
+@task()
+def add(x):
+    return range(x)
