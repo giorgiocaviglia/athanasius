@@ -1,5 +1,0 @@
-Django==1.4.1
-bson==0.3.3
-pymongo==2.2.1
-pytz==2012d
-wsgiref==0.1.2

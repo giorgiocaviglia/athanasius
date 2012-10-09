@@ -1,0 +1,25 @@
+TODO
+
+Celery
+Lanciare come daemon
+
+Initialize MongoDB
+
+
+Models
+- Collections
+- Schemas
+- Items
+
+- Users
+
+Routines
+
+Forms
+
+Processors
+- Checking fields
+- Mergin Persons
+
+
+MongoDB
