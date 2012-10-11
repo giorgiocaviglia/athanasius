@@ -9,13 +9,12 @@ import logging
 
 def parse_uploaded(f):
     # Get an instance of a logger
-    logger = logging.getLogger(__name__)
     
     try:
         # 1. getting file encoding
         result = chardet.detect(f.read())
         encoding = result['encoding']
-            
+        logging.info(str(f))    
         # 2. determing dialect
         f.open()
         sniffer = csv.Sniffer()
@@ -31,7 +30,7 @@ def parse_uploaded(f):
         results = [row for row in reader]
     
     except Exception, e:
-        logger.error('Something went wrong!', e)
+        logging.info(str(e))
     
     return results
 

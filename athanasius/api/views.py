@@ -155,8 +155,8 @@ def api_map_items(items, mapper):
     
 @api_key_is_valid
 def api_upload(request):
-    logger = logging.getLogger(__name__)
-    logger.error('OK dentro upload')
+    
+    logging.info('OK dentro upload')
     
     response = createResponse200()
     
