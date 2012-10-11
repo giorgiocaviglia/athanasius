@@ -166,7 +166,7 @@ def api_upload(request):
             chardet.detect(f.read(1024))
             encoding = result['encoding']
             
-            f.seek(0)
+            #f.seek(0)
             result = ""
             #utf8_file = f.read().decode(encoding).encode('utf-8')
             
