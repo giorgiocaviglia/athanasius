@@ -10,6 +10,9 @@ import logging
 def parse_uploaded(f):
     
     try:
+        
+        logging.info("siamo partiti cazzo")
+        
         csv.field_size_limit(1000000000)
         
         # 1. getting file encoding
