@@ -163,8 +163,9 @@ def api_upload(request):
         
         try:
             result = chardet.detect(f.read())
-            encoding = result['encoding']
             """
+            encoding = result['encoding']
+            
             f.open()
             sniffer = csv.Sniffer()
             dialect = sniffer.sniff(f.read())
