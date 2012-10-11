@@ -162,15 +162,21 @@ def api_upload(request):
     for f in request.FILES.getlist('files[]'):
         
         try:
-            #result = f.read()
+            
+            chardet.detect(f.read(1024))
+            encoding = result['encoding']
+            
+            f.open()
+            utf8_file = f.read().decode(encoding).encode('utf-8')
+            
             rows = csv.DictReader(f, delimiter='\t')
+            
+            
             result = []
             for row in rows:
                 result.append(row)
             
-            chardet.detect(f.read(1024))
             
-            #encoding = result['encoding']
             """
             f.open()
             sniffer = csv.Sniffer()
