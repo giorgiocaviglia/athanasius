@@ -161,11 +161,11 @@ def api_upload(request):
     response = createResponse200()
     
     try:
-        dir = os.path.dirname(os.path.abspath(__file__))
-        filepath = os.path.join(dir, 'test.txt')
-        f = open(filepath,"rb")
         
-        csv.field_size_limit(1000000000)
+        filepath = os.path.join(BASE_PATH, 'api/test.txt')
+        f = open(filepath,"rb")
+
+        #csv.field_size_limit(1000000000)
         
         # 1. getting file encoding
         result = chardet.detect(f.read())
