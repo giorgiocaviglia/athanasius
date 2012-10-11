@@ -5,10 +5,11 @@ import csv, json
 import chardet
 import logging
 
-# Get an instance of a logger
-logger = logging.getLogger(__name__)
+
 
 def parse_uploaded(f):
+    # Get an instance of a logger
+    logger = logging.getLogger(__name__)
     
     try:
         # 1. getting file encoding

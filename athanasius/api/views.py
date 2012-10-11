@@ -16,6 +16,7 @@ from wrappers import *
 from parsers import parse_json, parse_uploaded
 from bson import ObjectId
 from pymongo.errors import InvalidId
+import logging
 
 import time
 
@@ -154,7 +155,7 @@ def api_map_items(items, mapper):
     
 @api_key_is_valid
 def api_upload(request):
-    
+    logger = logging.getLogger(__name__)
     logger.error('OK dentro upload')
     
     response = createResponse200()
