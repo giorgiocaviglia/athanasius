@@ -167,7 +167,7 @@ def api_upload(request):
             encoding = result['encoding']
             
             #f.seek(0)
-            result = ""
+            #result = ""
             #utf8_file = f.read().decode(encoding).encode('utf-8')
             
             #rows = csv.DictReader(f, delimiter='\t')
@@ -184,7 +184,7 @@ def api_upload(request):
             dialect = sniffer.sniff(f.read())
             dialect.delimiter = "\t"
             """
-            response['result']['problema'] = result
+            response['result']['problema'] = "result"
         
         except Exception, e:
             response = createResponse401(str(e))
