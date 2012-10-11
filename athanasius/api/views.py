@@ -169,8 +169,7 @@ def api_upload(request):
                     destination.write(chunk)
             
                         
-            for line in open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'r')
-                
+            for line in open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'r'):                
                 print "sadasd"
                 
             #result = chardet.detect(f_read.read())
