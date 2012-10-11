@@ -162,7 +162,7 @@ def api_upload(request):
     
     try:
         
-        filepath = os.path.join(BASE_PATH, 'api/test.txt')
+        filepath = os.path.join(django.settings.BASE_PATH, 'api/test.txt')
         f = open(filepath,"rb")
 
         #csv.field_size_limit(1000000000)
