@@ -168,8 +168,8 @@ def api_upload(request):
                 for chunk in f.chunks():
                     destination.write(chunk)
             
-            f_read = open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'r'))
-            result = chardet.detect(f.read())
+            f_read = open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'r')
+            result = chardet.detect(f_read)
             encoding = result['encoding']
             
             #rows = csv.DictReader(f, delimiter='\t')
