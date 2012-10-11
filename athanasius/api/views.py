@@ -169,18 +169,18 @@ def api_upload(request):
                 for chunk in f.chunks():
                     destination.write(chunk)
             
-            with codecs.open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'rb') as src:
+                with codecs.open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'rb') as src:
                 
-                result = chardet.detect(src.read())
-                encoding = result['encoding']
+                    result = chardet.detect(src.read())
+                    encoding = result['encoding']
 
-                src.seek(0)
-                utf8_file = src.read().decode(encoding).encode('utf-8')
-                reader = csv.DictReader( utf8_file.splitlines(), dialect=csv.excel_tab )
+                    src.seek(0)
+                    utf8_file = src.read().decode(encoding).encode('utf-8')
+                    reader = csv.DictReader( utf8_file.splitlines(), dialect=csv.excel_tab )
 
-                results = [row for row in reader]
+                    results = [row for row in reader]
 
-                response['result']['problema'] = results
+                    response['result']['problema'] = results
                 
                 
             #encoding = chardet.detect(new_file.read())
