@@ -163,10 +163,10 @@ def api_upload(request):
         
         try:
             
-            file_reader = f.read()
+            with open('tmp.txt', 'wb+') as destination:
+                for chunk in f.chunks():
+                    destination.write(chunk)
             
-            chardet.detect(file_reader)
-            encoding = result['encoding']
             
             #f.seek(0)
             #result = ""
