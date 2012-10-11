@@ -155,13 +155,14 @@ def api_map_items(items, mapper):
     
 @api_key_is_valid
 def api_upload(request):
-    
-    logging.info('OK dentro upload')
-    
+        
     response = createResponse200()
     
     for f in request.FILES.getlist('files[]'):
         
+        response['result']['problema'] = str(f.read())
+        
+        """
         try:
             
             if f.size == 0:
@@ -180,7 +181,7 @@ def api_upload(request):
         
         except Exception, e:
             response = createResponse401(str(e))     
- 
+        """
     return HttpResponse(json.dumps(response, default=bson.json_util.default))
 
 
