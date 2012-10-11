@@ -167,14 +167,15 @@ def api_upload(request):
             encoding = result['encoding']
             
             f.open()
-            utf8_file = f.read().decode(encoding).encode('utf-8')
+            result = ""
+            #utf8_file = f.read().decode(encoding).encode('utf-8')
             
-            rows = csv.DictReader(f, delimiter='\t')
+            #rows = csv.DictReader(f, delimiter='\t')
             
             
-            result = []
-            for row in rows:
-                result.append(row)
+            #result = []
+            #for row in rows:
+            #    result.append(row)
             
             
             """
