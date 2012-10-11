@@ -173,7 +173,7 @@ def api_upload(request):
             for line in open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'r'):                
                 lines.append(line)
             
-             
+            """
             encoding = chardet.detect(lines[0])
             encoding = encoding['encoding']
             
@@ -193,13 +193,13 @@ def api_upload(request):
             #    result.append(row)
             
             
-            """
+            
             f.open()
             sniffer = csv.Sniffer()
             dialect = sniffer.sniff(f.read())
             dialect.delimiter = "\t"
             """
-            response['result']['problema'] = header
+            response['result']['problema'] = len(lines)
         
         except Exception, e:
             response = createResponse401(str(e))
