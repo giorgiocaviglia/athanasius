@@ -164,12 +164,12 @@ def api_upload(request):
         try:
             result = chardet.detect(f.read())
             encoding = result['encoding']
-            
+            """
             f.open()
             sniffer = csv.Sniffer()
             dialect = sniffer.sniff(f.read())
             dialect.delimiter = "\t"
-            
+            """
             response['result']['problema'] = encoding
         
         except Exception, e:
