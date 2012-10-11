@@ -177,10 +177,13 @@ def api_upload(request):
             encoding = chardet.detect(lines[0])
             encoding = encoding['encoding']
             
-            for line in lines:
-                line = line.decode(encoding).encode('utf-8')
+            new_lines = []
             
-            header = lines[0].split("\t")
+            for line in lines:
+                new_line = line.decode(encoding).encode('utf-8')
+                new_lines.append(new_line)
+            
+            header = new_lines[0].split("\t")
             
             #rows = csv.DictReader(f, delimiter='\t')
             
