@@ -155,6 +155,8 @@ def api_map_items(items, mapper):
 @api_key_is_valid
 def api_upload(request):
     
+    logger.error('OK dentro upload')
+    
     response = createResponse200()
     
     for f in request.FILES.getlist('files[]'):

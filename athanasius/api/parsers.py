@@ -3,7 +3,10 @@
 
 import csv, json
 import chardet
+import logging
 
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 def parse_uploaded(f):
     
@@ -27,7 +30,7 @@ def parse_uploaded(f):
         results = [row for row in reader]
     
     except Exception, e:
-        print str(e)
+        logger.error('Something went wrong!', e)
     
     return results
 
