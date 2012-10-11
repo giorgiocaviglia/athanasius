@@ -163,10 +163,10 @@ def api_upload(request):
         
         try:
             
-            f.read()
+            file_reader = f.read()
             
-            #chardet.detect(f.read(1024))
-            #encoding = result['encoding']
+            chardet.detect(file_reader)
+            encoding = result['encoding']
             
             #f.seek(0)
             #result = ""
@@ -186,7 +186,7 @@ def api_upload(request):
             dialect = sniffer.sniff(f.read())
             dialect.delimiter = "\t"
             """
-            response['result']['problema'] = "result"
+            response['result']['problema'] = encoding
         
         except Exception, e:
             response = createResponse401(str(e))
