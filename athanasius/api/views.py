@@ -168,7 +168,7 @@ def api_upload(request):
             for row in rows:
                 result.append(row)
             
-            #result = chardet.detect(f.read(1024))
+            chardet.detect(f.read(1024))
             
             #encoding = result['encoding']
             """
