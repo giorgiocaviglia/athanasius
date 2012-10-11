@@ -1,4 +1,5 @@
 env/*
+athanasius/tmp/*
 athanasius/data/*
 athanasius/mongo/*
 athanasius/athanasius/settings.py
