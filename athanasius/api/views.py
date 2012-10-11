@@ -167,7 +167,7 @@ def api_upload(request):
             
             
             
-            with open(os.path.join(django_settings.BASEPATH, 'tmp/tmp.txt'), 'wb+') as destination:
+            with open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'wb+') as destination:
                 for chunk in f.chunks():
                     destination.write(chunk)
             
