@@ -163,7 +163,10 @@ def api_upload(request):
         
         try:
             #result = f.read()
-            result = csv.DictReader(f, delimiter='\t')
+            rows = csv.DictReader(f, delimiter='\t')
+            result = []
+            for row in rows:
+                result.append(row)
             
             #result = chardet.detect(f.read(1024))
             
