@@ -164,17 +164,13 @@ def api_upload(request):
         try:
             
             
-            
-            
-            
             with open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'wb+') as destination:
                 for chunk in f.chunks():
                     destination.write(chunk)
             
-            
-            #f.seek(0)
-            #result = ""
-            #utf8_file = f.read().decode(encoding).encode('utf-8')
+            f_read = open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'r'))
+            result = chardet.detect(f.read())
+            encoding = result['encoding']
             
             #rows = csv.DictReader(f, delimiter='\t')
             
