@@ -199,7 +199,7 @@ def api_upload(request):
             dialect = sniffer.sniff(f.read())
             dialect.delimiter = "\t"
             """
-            response['result']['problema'] = len(lines)
+            response['result']['problema'] = str(lines)
         
         except Exception, e:
             response = createResponse401(str(e))
