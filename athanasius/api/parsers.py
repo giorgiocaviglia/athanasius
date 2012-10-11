@@ -8,9 +8,10 @@ import logging
 
 
 def parse_uploaded(f):
-    # Get an instance of a logger
     
     try:
+        csv.field_size_limit(1000000000)
+        
         # 1. getting file encoding
         result = chardet.detect(f.read())
         encoding = result['encoding']
