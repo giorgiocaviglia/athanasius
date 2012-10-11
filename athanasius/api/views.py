@@ -163,7 +163,10 @@ def api_upload(request):
     for f in request.FILES.getlist('files[]'):
         
         try:
-        
+            
+            result = parse_uploaded(f)
+            
+            """
             with open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'wb+') as destination:
                 os.chmod(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 0777)
                 for chunk in f.chunks():
@@ -180,7 +183,7 @@ def api_upload(request):
 
                     results = [row for row in reader]
 
-                    response['result']['problema'] = results
+                    
                 
                 
             #encoding = chardet.detect(new_file.read())
@@ -192,7 +195,7 @@ def api_upload(request):
             
            
             
-            """
+            
             lines = []
             for line in new_file:
                 lines.append(line)#.decode(encoding).encode('utf-8')
@@ -233,7 +236,7 @@ def api_upload(request):
             dialect = sniffer.sniff(f.read())
             dialect.delimiter = "\t"
             """
-            
+            response['result']['problema'] = result
         
         except Exception, e:
             response = createResponse401(str(e))
