@@ -17,6 +17,7 @@ from parsers import parse_json, parse_uploaded
 from bson import ObjectId
 from pymongo.errors import InvalidId
 import logging
+import chardet
 
 import time
 
@@ -160,8 +161,20 @@ def api_upload(request):
     
     for f in request.FILES.getlist('files[]'):
         
-        response['result']['problema'] = str(f.read())
+        try:
+            result = chardet.detect(f.read())
+            encoding = result['encoding']
+            
+            f.open()
+            sniffer = csv.Sniffer()
+            dialect = sniffer.sniff(f.read())
+            dialect.delimiter = "\t"
+            
+            response['result']['problema'] = encoding
         
+        except Exception, e:
+            response = createResponse401(str(e))
+            
         """
         try:
             

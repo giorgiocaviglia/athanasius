@@ -15,7 +15,7 @@ def parse_uploaded(f):
         # 1. getting file encoding
         result = chardet.detect(f.read())
         encoding = result['encoding']
-        logging.info(str(f))    
+
         # 2. determing dialect
         f.open()
         sniffer = csv.Sniffer()
