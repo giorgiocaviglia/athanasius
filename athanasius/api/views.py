@@ -163,6 +163,8 @@ def api_upload(request):
         
         try:
             
+            f.read()
+            
             #chardet.detect(f.read(1024))
             #encoding = result['encoding']
             
