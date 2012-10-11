@@ -162,7 +162,8 @@ def api_upload(request):
     for f in request.FILES.getlist('files[]'):
         
         try:
-            result = f.read()
+            #result = f.read()
+            result = csv.DictReader(f, delimiter='\t')
             
             #result = chardet.detect(f.read(1024))
             
@@ -173,7 +174,7 @@ def api_upload(request):
             dialect = sniffer.sniff(f.read())
             dialect.delimiter = "\t"
             """
-            response['result']['problema'] = ""
+            response['result']['problema'] = result
         
         except Exception, e:
             response = createResponse401(str(e))
