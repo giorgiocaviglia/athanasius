@@ -168,9 +168,9 @@ def api_upload(request):
                 for chunk in f.chunks():
                     destination.write(chunk)
             
-                        
+            result = []
             for line in open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'r'):                
-                print "sadasd"
+                result.append(line)
                 
             #result = chardet.detect(f_read.read())
             #encoding = result['encoding']
@@ -189,7 +189,7 @@ def api_upload(request):
             dialect = sniffer.sniff(f.read())
             dialect.delimiter = "\t"
             """
-            response['result']['problema'] = "encoding"
+            response['result']['problema'] = result
         
         except Exception, e:
             response = createResponse401(str(e))
