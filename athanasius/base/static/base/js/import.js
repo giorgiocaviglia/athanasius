@@ -45,6 +45,7 @@ function upload() {
 		
 		},
 		add: function(e,data){
+            console.log(data)
 			data.url = "../api/upload/"
 			request = data;
 			d3.select("#file-info").style("display","block")
@@ -53,7 +54,7 @@ function upload() {
 				.html("<strong>" + data.files[0].name + "</strong>" + " (" + Math.round(data.files[0].size/1000) + " kb)" )
 		},
 		fail: function( e, data ){
-			console.log("failed!", data.error);
+			console.log("failed!", e, data.error);
 		},
 		progress: function(e, data){
 			var progress = parseInt(data.loaded / data.total * 100, 10);
