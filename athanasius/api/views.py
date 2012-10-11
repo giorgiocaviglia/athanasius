@@ -160,88 +160,113 @@ def api_upload(request):
         
     response = createResponse200()
     
+    try:
+        dir = os.path.dirname(os.path.abspath(__file__))
+        filepath = os.path.join(dir, 'test.txt')
+        f = open(filepath,"rb")
+        
+        csv.field_size_limit(1000000000)
+        
+        # 1. getting file encoding
+        result = chardet.detect(f.read())
+        encoding = result['encoding']
+
+        # 2. determing dialect
+        f.seek(0)
+        sniffer = csv.Sniffer()
+        dialect = sniffer.sniff(f.read())
+        dialect.delimiter = "\t"
+
+        # 3. encoding file
+        f.seek(0)
+        utf8_file = f.read().decode(encoding).encode('utf-8')
+        reader = csv.DictReader( utf8_file.splitlines(), dialect=csv.excel_tab )
+
+        # 4. get results
+        results = [row for row in reader]
+        response['results'] = results
+        
+    except Exception, e:
+        response = createResponse401(str(e))
+    
+    """
     for f in request.FILES.getlist('files[]'):
         
-        try:
+        result = parse_uploaded(f)
             
-            result = parse_uploaded(f)
+        with open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'wb+') as destination:
+            os.chmod(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 0777)
+            for chunk in f.chunks():
+                destination.write(chunk)
             
-            """
-            with open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'wb+') as destination:
-                os.chmod(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 0777)
-                for chunk in f.chunks():
-                    destination.write(chunk)
-            
-                with codecs.open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'rb') as src:
+            with codecs.open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'rb') as src:
                 
-                    result = chardet.detect(src.read())
-                    encoding = result['encoding']
+                result = chardet.detect(src.read())
+                encoding = result['encoding']
 
-                    src.seek(0)
-                    utf8_file = src.read().decode(encoding).encode('utf-8')
-                    reader = csv.DictReader( utf8_file.splitlines(), dialect=csv.excel_tab )
+                src.seek(0)
+                utf8_file = src.read().decode(encoding).encode('utf-8')
+                reader = csv.DictReader( utf8_file.splitlines(), dialect=csv.excel_tab )
 
-                    results = [row for row in reader]
+                results = [row for row in reader]
 
                     
                 
                 
-            #encoding = chardet.detect(new_file.read())
-            #encoding = encoding['encoding']
-            #print encoding
-            #new_file.seek(0)
-            #reader = csv.DictReader( new_file.read(), dialect=csv.excel_tab )
+        #encoding = chardet.detect(new_file.read())
+        #encoding = encoding['encoding']
+        #print encoding
+        #new_file.seek(0)
+        #reader = csv.DictReader( new_file.read(), dialect=csv.excel_tab )
             
             
            
             
             
-            lines = []
-            for line in new_file:
-                lines.append(line)#.decode(encoding).encode('utf-8')
+        lines = []
+        for line in new_file:
+            lines.append(line)#.decode(encoding).encode('utf-8')
             
             
-            encoding = chardet.detect(lines[0])
-            encoding = encoding['encoding']
+        encoding = chardet.detect(lines[0])
+        encoding = encoding['encoding']
             
-            new_lines = [l.decode(encoding).encode('utf-8') for l in lines]
+        new_lines = [l.decode(encoding).encode('utf-8') for l in lines]
                 
-            #utf8_file = new_file.read()#.decode(encoding).encode('utf-8')
-            #reader = csv.DictReader( new_file.read(), dialect=csv.excel_tab )
-            #results = [row for row in reader]
+        #utf8_file = new_file.read()#.decode(encoding).encode('utf-8')
+        #reader = csv.DictReader( new_file.read(), dialect=csv.excel_tab )
+        #results = [row for row in reader]
             
             
-            encoding = chardet.detect(lines[0])
-            encoding = encoding['encoding']
+        encoding = chardet.detect(lines[0])
+        encoding = encoding['encoding']
             
-            new_lines = []
+        new_lines = []
             
-            for line in lines:
-                new_line = line.decode(encoding).encode('utf-8')
-                new_lines.append(new_line)
+        for line in lines:
+            new_line = line.decode(encoding).encode('utf-8')
+            new_lines.append(new_line)
             
-            header = new_lines[0].split("\t")
+        header = new_lines[0].split("\t")
             
-            #rows = csv.DictReader(f, delimiter='\t')
-            
-            
-            #result = []
-            #for row in rows:
-            #    result.append(row)
+        #rows = csv.DictReader(f, delimiter='\t')
             
             
+        #result = []
+        #for row in rows:
+        #    result.append(row)
             
-            f.open()
-            sniffer = csv.Sniffer()
-            dialect = sniffer.sniff(f.read())
-            dialect.delimiter = "\t"
-            """
-            response['result']['problema'] = result
+            
+            
+        f.open()
+        sniffer = csv.Sniffer()
+        dialect = sniffer.sniff(f.read())
+        dialect.delimiter = "\t"
         
-        except Exception, e:
-            response = createResponse401(str(e))
+        response['result']['problema'] = result
+        
             
-        """
+        
         try:
             
             if f.size == 0:
@@ -261,6 +286,8 @@ def api_upload(request):
         except Exception, e:
             response = createResponse401(str(e))     
         """
+    
+    
     return HttpResponse(json.dumps(response, default=bson.json_util.default))
 
 
