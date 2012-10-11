@@ -18,6 +18,7 @@ from bson import ObjectId
 from pymongo.errors import InvalidId
 import logging
 import chardet
+import codecs
 
 import time
 
@@ -168,12 +169,28 @@ def api_upload(request):
                 for chunk in f.chunks():
                     destination.write(chunk)
             
+            with codecs.open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'rb') as src:
+                
+                result = chardet.detect(src.read())
+                encoding = result['encoding']
+
+                src.seek(0)
+                utf8_file = src.read().decode(encoding).encode('utf-8')
+                reader = csv.DictReader( utf8_file.splitlines(), dialect=csv.excel_tab )
+
+                results = [row for row in reader]
+
+                response['result']['problema'] = results
+                
+                
+            #encoding = chardet.detect(new_file.read())
+            #encoding = encoding['encoding']
+            #print encoding
+            #new_file.seek(0)
+            #reader = csv.DictReader( new_file.read(), dialect=csv.excel_tab )
             
-            new_file = open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'r')
             
-            reader = csv.DictReader( new_file.read(), dialect=csv.excel_tab )
-            
-            result = [row for row in reader]
+           
             
             """
             lines = []
@@ -216,7 +233,7 @@ def api_upload(request):
             dialect = sniffer.sniff(f.read())
             dialect.delimiter = "\t"
             """
-            response['result']['problema'] = result
+            
         
         except Exception, e:
             response = createResponse401(str(e))
