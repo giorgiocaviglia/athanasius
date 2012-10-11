@@ -162,16 +162,17 @@ def api_upload(request):
     for f in request.FILES.getlist('files[]'):
         
         try:
-            
-            
+        
             with open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'wb+') as destination:
                 for chunk in f.chunks():
                     destination.write(chunk)
-            
-            f_read = open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'r')
-            
-            result = chardet.detect(f_read.read())
-            encoding = result['encoding']
+                        
+            for line in open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'r')
+                
+                print "sadasd"
+                
+            #result = chardet.detect(f_read.read())
+            #encoding = result['encoding']
             
             #rows = csv.DictReader(f, delimiter='\t')
             
@@ -187,7 +188,7 @@ def api_upload(request):
             dialect = sniffer.sniff(f.read())
             dialect.delimiter = "\t"
             """
-            response['result']['problema'] = encoding
+            response['result']['problema'] = "encoding"
         
         except Exception, e:
             response = createResponse401(str(e))
