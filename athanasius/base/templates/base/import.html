@@ -1,0 +1,39 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Athanasius | Import new data
+{% endblock %}
+
+{% block head_script %}
+<script src="/static/base/js/jquery.ui.widget.js"></script>
+<script src="/static/base/js/jquery.iframe-transport.js"></script>
+<script src="/static/base/js/jquery.fileupload.js"></script>
+<script src="/static/base/js/import.js"></script>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="step">
+	<div class="step-header">
+		<h3>{% block step_title %}{% endblock %}</h3>
+		<p class="step-tag">{% block step_description %}{% endblock %}</p>
+	</div>
+	
+    {% block step_content %}{% endblock %}
+	
+</div>
+
+<script>
+    
+    var api = athanasius.api()
+    	
+</script>
+
+{% block step_script %}{% endblock %}
+	
+</div>
+
+{% endblock %}
+
+

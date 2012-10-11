@@ -1,0 +1,68 @@
+{% extends "base/import.html" %}
+
+
+{% block step_title %}Upload{% endblock %}
+{% block step_description %}Description{% endblock %}
+
+{% block step_content %}
+
+<form class="form-horizontal">
+  <div class="control-group">
+    <label class="control-label" for="collectionId">Collection</label>
+
+    <div class="controls">
+		
+		<div class="btn-group">
+		  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+		    <span class="btn-label">Choose a collection</span>
+				
+		    <span class="caret"></span>
+		  </a>
+	  		<ul id="collections-list" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu"></ul>
+	  		  				
+		</div>
+    </div>
+  </div>
+ 
+  <div class="control-group">
+    <label class="control-label" for="collectionDescription">Upload file</label>
+    <div class="controls">
+		<span class="btn fileinput-button">
+	        <i class="icon-file"></i>
+	        <span>Choose file...</span>
+	        <input type="file" name="files[]" id="file-input">
+	    </span>
+	      
+    </div>
+  </div>
+
+  <div id="file-info" class="control-group">
+    	<div class="controls">
+			<p id="file-name"></p>
+			<div class="progress progress-striped active">
+			  <div class="bar" style="width: 0%;"></div>
+			</div>
+   		</div>
+  </div>
+
+
+<div class="form-actions">
+		<span class="btn btn-success" id="uploadFile">
+	        <i class="icon-upload icon-white"></i>
+	        <span>Upload data</span>
+	    </span>
+</div>
+
+</form>
+
+{% endblock %}
+
+
+
+{% block step_script %}
+
+<script type="text/javascript">
+    var collection;
+    upload();
+</script>
+{% endblock %}

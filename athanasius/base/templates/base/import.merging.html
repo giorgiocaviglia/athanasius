@@ -1,0 +1,16 @@
+{% extends "base/import.html" %}
+
+
+{% block step_title %}Merging{% endblock %}
+{% block step_description %}Description{% endblock %}
+
+{% block step_content %}{% endblock %}
+
+
+{% block step_script %}
+<script type="text/javascript">    
+    var session = {{ session|safe }}
+    
+    merge();
+</script>
+{% endblock %}

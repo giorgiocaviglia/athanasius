@@ -1,0 +1,84 @@
+{% extends "base/import.html" %}
+
+
+{% block step_title %}Mapping{% endblock %}
+{% block step_description %}Description{% endblock %}
+
+{% block step_content %}
+
+<div class="row-fluid">
+		
+	<!-- From your file -->
+		
+	<div class="span4">
+		<p class="section-title"><i class="icon-file"></i> From your file</p>
+		<div class="section" id="file-list">
+				
+		</div>
+	</div>
+		
+	<!-- Base schema -->
+		
+	<div class="span4">
+		<p class="section-title"><i class="icon-tag"></i> Base schema</p>
+		<div class="section" id="base-list">
+		
+		</div>
+	</div>
+		
+	<!-- Extended schema -->
+		
+	<div class="span4">
+		<p class="section-title"><i class="icon-tags"></i> Extend schema</p>
+		<div class="section" id="extend-list">
+				
+			<!-- The boxes go here -->
+				
+			<div class="box-container extend">
+				<p class="box-title">New schema</p>
+				<div class="box box-drop extend">
+					<span class="description light">Drop here a field from your file to create a new schema</span>
+				</div>
+			</div>
+				
+			<div id="new-schema-popup" class="popover bottom">
+				<h3 class="popover-title">Create a new schema</h3>
+				 <div class="popover-content">
+					<label>Search an existing schema to extend</label>
+					<input class="span12" id="search-singleschema" type="text" placeholder="Person">
+					<label>Provide a new name</label>
+					<input id="new-singleschema-name" type="text" placeholder="">
+					<label>Provide a description</label>
+					<textarea class="textarea-vertical span12" id="new-singleschema-description" placeholder="Description"></textarea>
+					<button class="btn" id="add-new-schema">Add</button>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+				
+			
+
+</div>
+	
+<div class="form-actions">
+		<span class="btn btn-success pull-right" id="getCouple">
+	        <span>Continue</span>
+	        <i class="icon-circle-arrow-right icon-white"></i>
+	    </span>
+</div>
+
+{% endblock %}
+
+{% block step_script %}
+<script type="text/javascript">    
+    var session = {{ session|safe }},
+        collection = session.collection,
+        baseSchema = session.base_schema,
+        header = session.header
+    
+    console.log(session)
+    mapping();
+</script>
+{% endblock %}

@@ -8,7 +8,8 @@ def createResponse200():
     out = dict()
     out['status'] = '200'
     out['statusText'] = 'OK'
-    out['result'] = []
+    out['result'] = {}
+    out['request'] = ''
 
     return out
 
@@ -21,8 +22,9 @@ def createResponse401(error):
     out = dict()
     out['status'] = '401'
     out['statusText'] = 'Bad Request'
-    out['errors'] = [error]
-
+    out['message'] = error
+    out['request'] = ''
+    
     return out
 
 def createResponse500(error):
@@ -34,7 +36,8 @@ def createResponse500(error):
     out = dict()
     out['status'] = '500'
     out['statusText'] = 'Internal Server Error'
-    out['errors'] = [error]
+    out['message'] = error
+    out['request'] = ''
 
     return out
     

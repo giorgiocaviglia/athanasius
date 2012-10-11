@@ -1,0 +1,53 @@
+{% extends "base/import.html" %}
+
+
+{% block step_title %}Define the new schema{% endblock %}
+{% block step_description %}Description{% endblock %}
+
+{% block step_content %}
+<form class="form-horizontal">
+ 
+  <div class="control-group">
+    <label class="control-label" for="new-schema-name">Name</label>
+    <div class="controls">
+		<div class="input-prepend">
+		  <span class="add-on" id="new-schema-prefix"></span><input id="new-schema-name" type="text" placeholder="">
+		</div>
+    </div>
+  </div>
+	  
+  <div class="control-group">
+    <label class="control-label" for="new-schema-label">Label</label>
+    <div class="controls">
+		<input id="new-schema-label" type="text" placeholder="">
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="new-schema-description">Description</label>
+    <div class="controls">
+		<textarea id="new-schema-description" type="text" placeholder=""></textarea>
+    </div>
+  </div>
+
+<div class="form-actions">
+		<span class="btn btn-success pull-right" id="newSchemaSend">
+	        <span>Continue</span>
+	        <i class="icon-circle-arrow-right icon-white"></i>
+	    </span>
+</div>
+	
+
+</form>
+{% endblock %}
+
+{% block step_script %}
+<script type="text/javascript">
+
+    var session = {{ session|safe }},
+        map = session.map
+    console.log(session)
+    
+    newSchema();
+</script>
+{% endblock %}

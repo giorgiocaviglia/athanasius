@@ -1,0 +1,22 @@
+{% extends "base/import.html" %}
+
+
+{% block step_title %}Select a base schema{% endblock %}
+{% block step_description %}Description{% endblock %}
+
+{% block step_content %}
+
+<div class="block" id="choose-schema">	
+	<p>Please, select a base schema:</p>
+	<input id="search-schema" type="text" placeholder="Search...">
+</div>	
+
+{% endblock %}
+
+{% block step_script %}
+<script type="text/javascript">    
+    var session = {{ session|safe }},
+        collection = session.collection;
+    selectSchema();
+</script>
+{% endblock %}
