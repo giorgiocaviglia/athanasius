@@ -162,18 +162,18 @@ def api_upload(request):
     for f in request.FILES.getlist('files[]'):
         
         try:
-            result = f.read()
-            """
-            result = chardet.detect(f.read())
+            #result = f.read(1024)
+            
+            result = chardet.detect(f.read(1024))
             
             encoding = result['encoding']
-            
+            """
             f.open()
             sniffer = csv.Sniffer()
             dialect = sniffer.sniff(f.read())
             dialect.delimiter = "\t"
             """
-            response['result']['problema'] = ""
+            response['result']['problema'] = encoding
         
         except Exception, e:
             response = createResponse401(str(e))
