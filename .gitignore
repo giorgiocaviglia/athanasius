@@ -2,6 +2,7 @@ env/*
 athanasius/data/*
 athanasius/mongo/*
 athanasius/athanasius/settings.py
+athanasius/athanasius/wsgi.py
 *.json
 *.pyc
 .DS_Store
