@@ -7,25 +7,27 @@ import chardet
 
 def parse_uploaded(f):
     
-    # 1. getting file encoding
-    result = chardet.detect(f.read())
-    encoding = result['encoding']
+    try:
+        # 1. getting file encoding
+        result = chardet.detect(f.read())
+        encoding = result['encoding']
             
-    # 2. determing dialect
-    f.open()
-    sniffer = csv.Sniffer()
-    dialect = sniffer.sniff(f.read())
-    dialect.delimiter = "\t"
+        # 2. determing dialect
+        f.open()
+        sniffer = csv.Sniffer()
+        dialect = sniffer.sniff(f.read())
+        dialect.delimiter = "\t"
 
-    # 3. encoding file
-    f.open()
-    utf8_file = f.read().decode(encoding).encode('utf-8')
-    reader = csv.DictReader( utf8_file.splitlines(), dialect=csv.excel_tab )
+        # 3. encoding file
+        f.open()
+        utf8_file = f.read().decode(encoding).encode('utf-8')
+        reader = csv.DictReader( utf8_file.splitlines(), dialect=csv.excel_tab )
 
-    # 4. get results
-    results = [row for row in reader]
+        # 4. get results
+        results = [row for row in reader]
     
-    f.close()
+    except Exception, e:
+        print str(e)
     
     return results
 
