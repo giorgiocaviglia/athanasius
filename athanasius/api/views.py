@@ -164,7 +164,7 @@ def api_upload(request):
             if f.size == 0:
                 raise Exception("File is empty")
         
-            results = parse_uploaded(filepath)
+            results = parse_uploaded(f)
 
             session = {}
             session['data'] = results
