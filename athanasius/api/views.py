@@ -173,6 +173,7 @@ def api_upload(request):
             
             reader = csv.DictReader( new_file.read(), dialect=csv.excel_tab )
             
+            result = [row for row in reader]
             
             """
             lines = []
@@ -215,7 +216,7 @@ def api_upload(request):
             dialect = sniffer.sniff(f.read())
             dialect.delimiter = "\t"
             """
-            response['result']['problema'] = len(reader)
+            response['result']['problema'] = result
         
         except Exception, e:
             response = createResponse401(str(e))
