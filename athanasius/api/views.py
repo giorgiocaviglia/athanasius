@@ -48,9 +48,6 @@ def api_check_similarity():
 
 
 def api_stats(request):
-    
-    
-    
     return
 
 
@@ -173,7 +170,6 @@ def api_upload(request):
         
     response = createResponse200()
     
-    """
     try:
         
         filepath = os.path.join(django_settings.BASE_PATH, 'api/dalamb.txt')
@@ -214,10 +210,11 @@ def api_upload(request):
             response['result']['header'] = results[0].keys()
             response['result']['count'] = len(results)        
         
+   """
         
-        except Exception, e:
+    except Exception, e:
             
-            response = createResponse401(str(e))
+        response = createResponse401(str(e))
     
     return HttpResponse(json.dumps(response, default=bson.json_util.default))
 
