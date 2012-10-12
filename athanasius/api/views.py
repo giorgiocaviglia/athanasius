@@ -163,10 +163,12 @@ def api_upload(request):
     try:
         
         filepath = os.path.join(django_settings.BASE_PATH, 'api/test.txt')
-        f = open(filepath,"rb")
-        result = repr(f.read())
         
-        response['result'] = result
+        with open(filepath, "rb") as src:
+            reader = csv.reader(src)
+            
+            result = [row for row in reader]
+            response['result'] = result
         
         #csv.field_size_limit(1000000000)
         """
