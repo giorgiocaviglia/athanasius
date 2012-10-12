@@ -1,6 +1,6 @@
 # Create your views here.
 import bson, json
-import os, chardet, csv
+import os, sys, chardet, csv
 from django.template import Context, loader
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, render_to_response
@@ -165,8 +165,9 @@ def api_upload(request):
         filepath = os.path.join(django_settings.BASE_PATH, 'api/test.txt')
         
         with open(filepath, "rb") as src:
-            reader = csv.reader(src)
             
+            reader = csv.DictReader(src, dialect=csv.excel_tab)
+            print >> sys.stderr, "application debug"
             result = [row for row in reader]
             response['result'] = result
         
