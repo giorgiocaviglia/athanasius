@@ -164,9 +164,9 @@ def api_upload(request):
         
         filepath = os.path.join(django_settings.BASE_PATH, 'api/test.txt')
         f = open(filepath,"rb")
-
+        f.read()
         #csv.field_size_limit(1000000000)
-        
+        """
         # 1. getting file encoding
         result = chardet.detect(f.read())
         encoding = result['encoding']
@@ -185,6 +185,7 @@ def api_upload(request):
         # 4. get results
         results = [row for row in reader]
         response['results'] = results
+        """
         
     except Exception, e:
         response = createResponse401(str(e))
