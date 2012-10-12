@@ -11,7 +11,7 @@ from django.conf import settings as django_settings
 from decorators import *
 from helpers import *
 from models import Process, Session
-from tasks import add, uploadFromFile
+from tasks import add, uploadFromFile, check_similarity, check_similarity_fast
 from wrappers import *
 from parsers import parse_json, parse_uploaded
 from bson import ObjectId
@@ -20,6 +20,7 @@ import logging
 import chardet
 import codecs
 
+import datetime
 import time
 
 @api_key_is_valid
@@ -31,7 +32,6 @@ def api_test(request):
     #task = add.delay(12)
     
     Process.objects.create(owner=user, task_id=task.task_id, name=uploadFromFile.name)
-    print
     response = createResponse200()
     response['result'] = task.task_id
     
@@ -39,6 +39,19 @@ def api_test(request):
 
 
 
+
+def api_process_values():
+    return
+
+def api_check_similarity():
+    return
+
+
+def api_stats(request):
+    
+    
+    
+    return
 
 
 @api_key_is_valid
@@ -48,17 +61,13 @@ def api_merge(request):
     
     try:
         session = get_session(request)
-        print session
         
         session_id = session['session_id']
         mapper = session['map']
         
-        
         if not mapper or not session_id:
             raise Exception("Required parameters missing")
-            
-        
-        
+                    
         # creating schema if does not exist
         #TODO: creating a method for this
 
@@ -88,12 +97,11 @@ def api_merge(request):
         objects = []
         for d in result['result']['objects'][0]['data']:
             
-            
             #TODO: controllare se collezione esiste...
             obj = {}
             obj['schema'] = mapper['_id']
             obj['collection'] = mapper['collection']
-            obj['created_at'] = time.time()
+            obj['created_at'] = ""
             obj['attributes'] = []
             obj['_id'] = ObjectId()
             # adding the session id for mapping...
@@ -102,30 +110,35 @@ def api_merge(request):
             for b in mapper['map']:
                 
                 attribute = {}
+                
                 attribute['key'] = b['key']
                 
                 if 'map' in b:
                     attribute['value'] = d[b['map']['label']]
                 else:
                     attribute['value'] = ""
-                
                 obj['attributes'].append(attribute)
             objects.append(obj)    
+                
+        created_objects = create_objects('items', objects)
         
-        print len(objects)
+        if created_objects['status'] != '200':
+            raise Exception("Sorry, something went wrong during the import...")
         
-        created_objects = create_objects('items',objects)
+        response['result']['session'] = session
+        response['result']['objects'] = created_objects['result']['objects']
         
-        response['result'] = created_objects
+        
+        
+        #user = request.user if request.user.is_authenticated() else get_user_from_api_key(request)
+        #result = check_similarity_fast('mrofl:Person/ee:Person', { 'mrofl:Literal/mrofl:FullName' : 1, 'mrofl:Date/mrofl:BirthDate' : .5, 'mrofl:Date/mrofl:DeathDate' : .5  }, objects, threshold=0.7)
+        #Process.objects.create(owner=user, task_id=task.task_id, name=check_similarity.name)
+
+        #response['result'] = result
+        
+        #response['result'] = similar('mrofl:Person', { 'mrofl:Literal/mrofl:FullName' : 1, 'mrofl:Date/mrofl:BirthDate' : .5, 'mrofl:Date/mrofl:DeathDate' : .5  }, objects, threshold=0.8)
         
         """
-        print
-        print "==============================="
-        print " Look up for similarity..."
-        print "==============================="
-        
-        response['similar'] = similar('mrofl:Person', { 'mrofl:Literal/mrofl:FullName' : 1, 'mrofl:Date/mrofl:BirthDate' : .5, 'mrofl:Date/mrofl:DeathDate' : .5  }, objects, threshold=0.8)
-        
         created_objects = []
         for object in objects:
             result = mongo.insert(database, 'objects', object)
@@ -136,10 +149,10 @@ def api_merge(request):
         response['results']['count'] = len(objects)
         
         
-    except Exception, e:
+        except Exception, e:
         response['errors'] = str(e)
         response['status'] = 0
-    """
+        """
     
     except Exception, e:
         response=createResponse401(str(e))
@@ -160,6 +173,7 @@ def api_upload(request):
         
     response = createResponse200()
     
+    """
     try:
         
         filepath = os.path.join(django_settings.BASE_PATH, 'api/dalamb.txt')
@@ -180,109 +194,10 @@ def api_upload(request):
             response['result']['header'] = results[0].keys()
             response['result']['count'] = len(results)
         
-        #csv.field_size_limit(1000000000)
-        """
-        # 1. getting file encoding
-        result = chardet.detect(f.read())
-        encoding = result['encoding']
-
-        # 2. determing dialect
-        f.seek(0)
-        sniffer = csv.Sniffer()
-        dialect = sniffer.sniff(f.read())
-        dialect.delimiter = "\t"
-
-        # 3. encoding file
-        f.seek(0)
-        utf8_file = f.read().decode(encoding).encode('utf-8')
-        reader = csv.DictReader( utf8_file.splitlines(), dialect=csv.excel_tab )
-
-        # 4. get results
-        results = [row for row in reader]
-        response['results'] = results
-        """
-        
-    except Exception, e:
-        response = createResponse401(str(e))
-    
     """
+    
     for f in request.FILES.getlist('files[]'):
-        
-        result = parse_uploaded(f)
             
-        with open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'wb+') as destination:
-            os.chmod(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 0777)
-            for chunk in f.chunks():
-                destination.write(chunk)
-            
-            with codecs.open(os.path.join(django_settings.BASE_PATH, 'tmp/tmp.txt'), 'rb') as src:
-                
-                result = chardet.detect(src.read())
-                encoding = result['encoding']
-
-                src.seek(0)
-                utf8_file = src.read().decode(encoding).encode('utf-8')
-                reader = csv.DictReader( utf8_file.splitlines(), dialect=csv.excel_tab )
-
-                results = [row for row in reader]
-
-                    
-                
-                
-        #encoding = chardet.detect(new_file.read())
-        #encoding = encoding['encoding']
-        #print encoding
-        #new_file.seek(0)
-        #reader = csv.DictReader( new_file.read(), dialect=csv.excel_tab )
-            
-            
-           
-            
-            
-        lines = []
-        for line in new_file:
-            lines.append(line)#.decode(encoding).encode('utf-8')
-            
-            
-        encoding = chardet.detect(lines[0])
-        encoding = encoding['encoding']
-            
-        new_lines = [l.decode(encoding).encode('utf-8') for l in lines]
-                
-        #utf8_file = new_file.read()#.decode(encoding).encode('utf-8')
-        #reader = csv.DictReader( new_file.read(), dialect=csv.excel_tab )
-        #results = [row for row in reader]
-            
-            
-        encoding = chardet.detect(lines[0])
-        encoding = encoding['encoding']
-            
-        new_lines = []
-            
-        for line in lines:
-            new_line = line.decode(encoding).encode('utf-8')
-            new_lines.append(new_line)
-            
-        header = new_lines[0].split("\t")
-            
-        #rows = csv.DictReader(f, delimiter='\t')
-            
-            
-        #result = []
-        #for row in rows:
-        #    result.append(row)
-            
-            
-            
-        f.open()
-        sniffer = csv.Sniffer()
-        dialect = sniffer.sniff(f.read())
-        dialect.delimiter = "\t"
-        
-        response['result']['problema'] = result
-        
-            
-        
         try:
             
             if f.size == 0:
@@ -297,12 +212,12 @@ def api_upload(request):
             # returning just the first one...
             response['result']['session_id'] = str(created['result']['objects'][0])
             response['result']['header'] = results[0].keys()
-            response['result']['count'] = len(results)
+            response['result']['count'] = len(results)        
+        
         
         except Exception, e:
-            response = createResponse401(str(e))     
-        """
-    
+            
+            response = createResponse401(str(e))
     
     return HttpResponse(json.dumps(response, default=bson.json_util.default))
 
@@ -419,11 +334,16 @@ def api_collections(request, collection_id=None):
                 query = { '_id' : schema_id }
             
             response = read_objects('collections', query, limit=limit, offset=offset, sort=sort)
+            
             if response['status'] == '200' and response['result']['count'] == 0:
-                response = createResponse401('Collection %s does not exist' % collection_id)
+                response = createResponse401('Collection %s does not exist' % collection_id)            
         else:        
             response = read_objects('collections', query, limit=limit, offset=offset, sort=sort)
     
+        for collection in response['result']['objects']:
+            query = { 'collection' : collection['_id'] }
+            items_count = read_objects('items', query, limit=0, offset=0, sort=sort)
+            collection['items_count'] = len(items_count['result']['objects'])
     
     if method == "POST":
         if collection_id:

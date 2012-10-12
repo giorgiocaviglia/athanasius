@@ -41,10 +41,10 @@
 	    			Athanasius
 	  		  	</a>
 				<ul class="nav">
-				  <li><a href="#">About</a></li>
-				  <li><a href="/collections">Collections</a></li>
-				  <li><a href="/objects">Objects</a></li>
-				  <li><a href="/types">Types</a></li>
+				  <li class="{% if page == 'about' %} active {% endif %}"><a href="/about">About</a></li>
+				  <li class="{% if page == 'collections' %} active {% endif %}"><a href="/collections">Collections</a></li>
+				  <li class="{% if page == 'items' %} active {% endif %}"><a href="/items">Items</a></li>
+				  <li class="{% if page == 'schemas' %} active {% endif %}"><a href="/schemas">Schemas</a></li>
 				</ul>
 				
 				{% if user.is_authenticated %}

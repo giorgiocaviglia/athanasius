@@ -3,7 +3,7 @@ import settings
 import json
 from bson import ObjectId
 from pymongo.errors import InvalidId
-from models import Key
+from models import *
 
 def get_api_key(request):
     api_key = request.GET.get('api_key') or request.POST.get('api_key')

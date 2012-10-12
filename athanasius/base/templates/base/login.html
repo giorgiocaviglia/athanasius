@@ -1,27 +1,31 @@
 {% extends "base/base.html" %}
 
 {% block content %}
+<div class="page-header">
+  <h1>Login</h1>
+  <p>Sorry, but you have to login to access the required resource.</p>
+</div>
 
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
+  <div class="alert">
+    {% if form.errors %}
+    Your username and password didn't match. Please try again.
+    {% endif %}
+  </div>
 
+    <form method="post" action="">
+    {% csrf_token %}
+    <table>
+    <tr>
+        <td>{{ form.username.label_tag }}</td>
+        <td>{{ form.username }}</td>
+    </tr>
+    <tr>
+        <td>{{ form.password.label_tag }}</td>
+        <td>{{ form.password }}</td>
+    </tr>
+    </table>
 
-<form method="post" action="">
-{% csrf_token %}
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
-
-<input type="submit" class="btn" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
-
+    <input type="submit" class="btn" value="login" />
+    <input type="hidden" name="next" value="{{ next }}" />
+    </form>
 {% endblock %}

@@ -6,9 +6,15 @@
 		"description" : "A Mrofl Literal"
 	},
 	{
-		"_id" : "grandtour",
-		"name" : "Grand Tour",
+		"_id" : "ee",
+		"name" : "Electronic Enlightment",
         "curator" : "",
-		"description" : "A Mrofl Literal"
+		"description" : "Electronic Enlightment"
+	},
+	{
+		"_id" : "dalembert",
+		"name" : "D'Alembert",
+        "curator" : "",
+		"description" : "D'Alembert"
 	}
 ]

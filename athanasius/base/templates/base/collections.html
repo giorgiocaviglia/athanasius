@@ -1,0 +1,33 @@
+{% extends "base/base.html" %}
+
+{% block title %}Athanasius • Collections{% endblock %}
+
+
+{% block content %}
+
+<div class="step">
+	<div class="step-header">
+		<h3>{% block step_title %}Collections{% endblock %}</h3>
+		<p class="step-tag">{% block step_description %}{% endblock %}</p>
+	</div>
+	
+    
+    <div id="collections">
+    </div>
+    
+	<span class="btn" id="getCouple">
+        <span>New</span>
+    </span>
+	
+</div>
+
+
+{% block step_script %}
+<script src="/static/base/js/collections.js"></script>
+{% endblock %}
+	
+</div>
+
+{% endblock %}
+
+

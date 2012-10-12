@@ -14,12 +14,26 @@ import json
 
 from forms import *
 
-@login_required(login_url="/login/")
 def base_index(request):
-    return HttpResponse("ok")
+    c = RequestContext(request)
+    return render_to_response("base/index.html", c)
+   
+
+def base_about(request):
+    data = {}
+    data['page'] = 'about'
+    c = RequestContext(request, data)
+    return render_to_response("base/about.html", c)
 
 
 @login_required(login_url="/login/")
+def base_collections(request):
+    data = {}
+    data['page'] = 'collections'
+    c = RequestContext(request, data)
+    
+    return render_to_response("base/collections.html", c) 
+
 def base_import(request):
     
     action = request.GET.get('action') or request.POST.get('action') or None
@@ -105,9 +119,9 @@ def base_account(request):
             r['owner'] = task.owner.username
                         
             if r['state'] == "SUCCESS":
-                r['result'] = len(task.result())
+                r['result'] = task.result()[0:10]
                 #task.task().forget()
-            
+                
             if r['state'] == "PROGRESS":
                 r['result'] = task.info()
                         

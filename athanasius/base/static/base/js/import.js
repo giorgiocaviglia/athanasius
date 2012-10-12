@@ -164,7 +164,17 @@ function merge(){
     data = {}
     data['session'] = JSON.stringify(session)
 	api.merge(data,function(result){
-	    console.log(result)
+        
+        console.log(result)
+        
+        var msg = "Congratulations! <b>" + result.result.objects.length + "</b> " + result.result.session.base_schema._id + " have been succesfully imported into <a href='/collections/" + result.result.session.collection + "'>" + result.result.session.collection + "</a> collection"; 
+        
+        if (result.status != '200')
+            msg = "Sorry something wrong happened during the import"
+        
+        d3.select("#import-result")
+            .html(msg)
+        
 	})
 		
 }

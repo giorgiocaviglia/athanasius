@@ -16,7 +16,7 @@ from djcelery.models import TaskMeta
 from celery.result import BaseAsyncResult
 from celery.signals import *
 import processes
-#from processes import *
+
 
 class Session(models.Model):
     
@@ -134,6 +134,3 @@ class Key(models.Model):
     def __unicode__(self):
         return 'ApiKey: %s' % (self.key)
 
-
-#   now = datetime.utcnow()
-#   kstr = hashlib.md5('%s-%s' % (user.email, now)).hexdigest()[:KEY_SIZE]
