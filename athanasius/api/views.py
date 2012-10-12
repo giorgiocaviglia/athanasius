@@ -166,8 +166,9 @@ def api_upload(request):
         
         with open(filepath, "rb") as src:
             
-            reader = csv.DictReader(src, dialect=csv.excel_tab)
-            print >> sys.stderr, "application debug"
+            utf8_file = src.read().decode('ISO-8859-2').encode('utf-8')
+            reader = csv.DictReader(utf8_file.splitlines(), dialect=csv.excel_tab)
+
             result = [row for row in reader]
             response['result'] = result
         
