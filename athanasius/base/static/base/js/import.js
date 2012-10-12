@@ -41,7 +41,7 @@ function upload() {
 			session['session_id'] = data.result.result.session_id
             session['collection'] = collection
 			
-           // document.location = "/import?action=select_schema&session=" + JSON.stringify(session);
+            document.location = "/import?action=select_schema&session=" + JSON.stringify(session);
 		
 		},
 		add: function(e,data){

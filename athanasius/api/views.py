@@ -162,15 +162,23 @@ def api_upload(request):
     
     try:
         
-        filepath = os.path.join(django_settings.BASE_PATH, 'api/test.txt')
+        filepath = os.path.join(django_settings.BASE_PATH, 'api/dalamb.txt')
         
         with open(filepath, "rb") as src:
             
             utf8_file = src.read().decode('ISO-8859-2').encode('utf-8')
             reader = csv.DictReader(utf8_file.splitlines(), dialect=csv.excel_tab)
 
-            result = [row for row in reader]
-            response['result'] = result
+            results = [row for row in reader]
+        
+            session = {}
+            session['data'] = results
+            created = create_objects('sessions', session)
+
+            # returning just the first one...
+            response['result']['session_id'] = str(created['result']['objects'][0])
+            response['result']['header'] = results[0].keys()
+            response['result']['count'] = len(results)
         
         #csv.field_size_limit(1000000000)
         """
