@@ -210,7 +210,7 @@ def api_upload(request):
             response['result']['header'] = results[0].keys()
             response['result']['count'] = len(results)        
         
-   """
+    """
         
     except Exception, e:
             
@@ -385,7 +385,6 @@ def api_scratch(request):
         # mrofl collection
         mrofl_collection_file = os.path.join(getattr(django_settings, 'BASE_PATH'), 'scratch/mrofl.collection.js')
         mrofl_collection = parse_json(mrofl_collection_file)
-        print mrofl_collection
         create_objects('collections', mrofl_collection)
     
     except Exception, e:

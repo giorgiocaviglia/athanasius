@@ -5,7 +5,7 @@ import os
 import csv
 import difflib
 import chardet
-from celery import task, current_task
+#from celery import task, current_task
 from wrappers import *
 
 
@@ -131,7 +131,7 @@ def check_similarity_fast(schema, attributes, items, threshold=0.8):
 
 
 
-@task()
+#@task()
 def uploadFromFile():
     
     dir = os.path.dirname(os.path.abspath(__file__))
@@ -170,12 +170,12 @@ def uploadFromFile():
 
 
 
-@task()
+#@task()
 def findSimilarItems():
     
     return {}
 
 
-@task()
+#@task()
 def add(x):
     return x
